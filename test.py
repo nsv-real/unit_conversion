@@ -1,6 +1,4 @@
 import unittest
-from functools import wraps
-
 from weight_convert import *
 
 class TestFunctions(unittest.TestCase):
@@ -42,10 +40,11 @@ class TestFunctions(unittest.TestCase):
         self.assertEqual(lb_weights.ounces, ounces_to_pounds * weight)
         print("`ounces` field in result should equal {0} * {1}({2}) = {3}".format(ounces_to_pounds, weight, unit, ounces_to_pounds * weight ))
 
-        self.assertEqual(lb_weights.kgs, conversion["pound"]["kg"] * weight)
-        print("`kgs` field in result should equal {0} * {1}({2}) = {3}".format(conversion["pound"]["kg"], weight, unit, conversion["pound"]["kg"] * weight ))
+        kg_to_pound = conversion["pound"]["kg"]
+        self.assertEqual(lb_weights.kgs, kg_to_pound * weight)
+        print("`kgs` field in result should equal {0} * {1}({2}) = {3}".format(kg_to_pound, weight, unit, kg_to_pound * weight ))
         
-        print("*** Finish Testing `convert_kg` ***")
+        print("*** Finish Testing `convert_pounds` ***")
         print("-----")
 
     def test_convert_ounces(self):

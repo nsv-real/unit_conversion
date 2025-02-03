@@ -21,7 +21,7 @@ def convert_kg(value):
     unit = "kg"
     """Kilogram to imperial ounce and pound.
        `value` is int or float.
-       Returns named tuple.
+       Returns `Weight` named tuple.
     """
     return Weight(value, conversion[unit]["pound"] * value, 
                   conversion[unit]["ounce"] * value)
@@ -30,7 +30,7 @@ def convert_pounds(value):
     unit = "pound"
     """Imperial pound to ounce and kilogram.
        `value` is int or float.
-       Returns named tuple.
+       Returns `Weight` named tuple.
     """
     return Weight(conversion[unit]["kg"] * value, value,
                   conversion[unit]["ounce"] * value)
@@ -39,7 +39,7 @@ def convert_ounces(value):
     unit = "ounce"
     """Imperial ounce to pound and kilogram.
        `value` is int or float.
-       Returns named named tuple.
+       Returns `Weight` named tuple.
     """
     return Weight(conversion[unit]["kg"] * value, 
                   conversion[unit]["pound"] * value, value)
