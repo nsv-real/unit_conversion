@@ -1,5 +1,4 @@
 conversion_table = {
-    
         "weight": {
             "kg": {
                 "pound": 2.20462,
@@ -72,12 +71,19 @@ conversion_table = {
                 "floz": 33.814,
                 "milliliter": 1000
             }
-
         }
 }    
 
 class Unit:
+    """ Unit class
+    """
     def __init__(self, initial_unit_name, initial_unit_quantity, category, converted_units):
+        """ __init__ method
+            param - initial_unit_name - 'kg', 'pound', 'liter', etc.
+            param - initial_unit_quantity - an int or float specifying how many units
+            param - category - one of 'fluid' or 'weight'
+            param - converted_units - a list of converted unit names
+        """
         self.initial_unit_name = initial_unit_name
         self.initial_unit_quantity = initial_unit_quantity
         self.category = category
@@ -87,9 +93,15 @@ class Unit:
         return f"Unit<Category: {self.category.title()}, Initial unit: {self.initial_unit_name}, Initial value: {self.initial_unit_quantity}, Converted: {self.converted_units}>"
 
 class UnitConverter:
+    """ UnitConveted class
+    """
     
     def __init__(self, conversion_table, initial_unit_name=None, initial_unit_quantity=None, category=None):
-        
+        """ __init__ method
+        param - initial_unit_name - 'kg', 'pound', 'liter', etc.
+        param - initial_unit_quantity - an int or float specifying how many units
+        param - category - one of 'fluid' or 'weight'
+        """
         self.category = category
 
         try:
@@ -111,6 +123,9 @@ class UnitConverter:
         self.calculate_conversions()
 
     def calculate_conversions(self):
+        """ calculate_conversion method
+            calculates/initializes Unit object
+        """
 
         conversions = self.conversion_table[self.initial_unit_name]
 
