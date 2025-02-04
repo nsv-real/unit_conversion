@@ -1,5 +1,3 @@
-
-
 weight_conversion = {
     "kg": {
         "pound": 2.20462,
@@ -74,35 +72,33 @@ fluid_volume_conversion = {
     }
 }
 
-class Weight:
-    def __init__(self, initial_unit_name, initial_unit_quanity):
+class Unit:
+    def __init__(self, initial_unit_name, initial_unit_quanity, category):
         self.initial_unit_name = initial_unit_name
         self.initial_unit_quantity = initial_unit_quanity
+        self.type = category
         self.conversion_values = {}
 
     def __repr__(self):
-        return f"Weight<Initial unit: {self.initial_unit_name}, initial value: {self.initial_unit_quantity} converted: {self.conversion_values}>"
+        return f"{self.category.title()}<Initial unit: {self.initial_unit_name}, initial value: {self.initial_unit_quantity} converted: {self.conversion_values}>"
 
-class WeightConverter:
-    def __init__(self, conversion_table, initial_unit_name=None, initial_unit_quantity=None):
+class UnitConverter:
+    allowed_categories = ["weight", "fluid"]
+    def __init__(self, conversion_table, initial_unit_name=None, initial_unit_quantity=None, category=None):
         self.conversion_table = conversion_table
         self.allowed_units = list(self.conversion_table.keys())
-
-        if initial_unit_name.lower() not in self.allowed_units:
-            raise ValueError(f"`initial_unit_name` parameter must be one of \
-                             {' '.join(self.allowed_units)}!")
-        
-        if type(initial_unit_quantity) not in [int, float] or initial_unit_quantity < 0:
-            raise ValueError("`initial_unit_quanity` must be a positve `int` or `float`")
-        
         self.initial_unit_name = initial_unit_name.lower()
         self.initial_unit_quantity = initial_unit_quantity
-
+        
+        if category not in self.__class__.allowed_categories:
+            raise ValueError(f"`category` must be one of {' '.join(self.__class__.allowed_categories)}")
+        
+        self.category = category
         self.calculate_conversions()
 
     def calculate_conversions(self):
 
-        self.weight = Weight(self.initial_unit_name, self.initial_unit_quantity)
+        self.unit = Unit(self.initial_unit_name, self.initial_unit_quantity, self.category)
 
         conversions = self.conversion_table[self.initial_unit_name]
 
