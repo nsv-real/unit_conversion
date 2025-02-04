@@ -1,4 +1,4 @@
-conversion = {
+conversion_table = {
     
         "weight": {
             "kg": {
@@ -77,14 +77,14 @@ conversion = {
 }    
 
 class Unit:
-    def __init__(self, initial_unit_name, initial_unit_quantity, category):
+    def __init__(self, initial_unit_name, initial_unit_quantity, category, converted_units):
         self.initial_unit_name = initial_unit_name
         self.initial_unit_quantity = initial_unit_quantity
         self.category = category
-        self.conversion_values = {}
-
+        self.converted_units = converted_units
+    
     def __repr__(self):
-        return f"Unit<Category: {self.category.title()}, Initial unit: {self.initial_unit_name}, Initial value: {self.initial_unit_quantity}, Converted: {self.conversion_values}>"
+        return f"Unit<Category: {self.category.title()}, Initial unit: {self.initial_unit_name}, Initial value: {self.initial_unit_quantity}, Converted: {self.converted_units}>"
 
 class UnitConverter:
     
@@ -103,17 +103,21 @@ class UnitConverter:
             raise ValueError(f"`category` must be one of: {' '.join(self.allowed_units)}")
         
         self.initial_unit_name = initial_unit_name.lower()
+
+        if type(initial_unit_quantity) not in [int, float] or initial_unit_quantity < 0:
+            raise ValueError("`initial_unit_quantity` must be a non-negative float or int!")
+
         self.initial_unit_quantity = initial_unit_quantity
         self.calculate_conversions()
 
     def calculate_conversions(self):
 
-        self.unit = Unit(self.initial_unit_name, self.initial_unit_quantity, self.category)
-
         conversions = self.conversion_table[self.initial_unit_name]
 
+        self.unit = Unit(self.initial_unit_name, self.initial_unit_quantity, self.category, list(conversions.keys()))
+
         for unit, conversion in conversions.items():
-            self.unit.conversion_values[unit] = conversion * self.initial_unit_quantity
+            setattr(self.unit, unit, conversion * self.initial_unit_quantity)
 
     def __repr__(self):
         return f"UnitConverter<Category: {self.category.title()}, Initial unit: {self.initial_unit_name}, Initial value: {self.initial_unit_quantity}>"
