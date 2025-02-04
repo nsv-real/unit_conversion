@@ -19,7 +19,7 @@ Weight = namedtuple('Weight', ['kgs', 'pounds', 'ounces'])
 
 def convert_kg(value):
     unit = "kg"
-    """Kilogram to imperial ounce and pound.
+    """Kilogram to American ounce and pound.
        `value` is int or float.
        Returns `Weight` named tuple.
     """
@@ -28,7 +28,7 @@ def convert_kg(value):
 
 def convert_pounds(value):
     unit = "pound"
-    """Imperial pound to ounce and kilogram.
+    """American pound to ounce and kilogram.
        `value` is int or float.
        Returns `Weight` named tuple.
     """
@@ -37,7 +37,7 @@ def convert_pounds(value):
 
 def convert_ounces(value):
     unit = "ounce"
-    """Imperial ounce to pound and kilogram.
+    """American ounce to pound and kilogram.
        `value` is int or float.
        Returns `Weight` named tuple.
     """
