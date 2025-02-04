@@ -73,10 +73,10 @@ fluid_volume_conversion = {
 }
 
 class Unit:
-    def __init__(self, initial_unit_name, initial_unit_quanity, category):
+    def __init__(self, initial_unit_name, initial_unit_quantity, category):
         self.initial_unit_name = initial_unit_name
-        self.initial_unit_quantity = initial_unit_quanity
-        self.type = category
+        self.initial_unit_quantity = initial_unit_quantity
+        self.category = category
         self.conversion_values = {}
 
     def __repr__(self):
@@ -103,40 +103,4 @@ class UnitConverter:
         conversions = self.conversion_table[self.initial_unit_name]
 
         for unit, conversion in conversions.items():
-            self.weight.conversion_values[unit] = conversion
-
-
-class FluidVolume:
-    def __init__(self, initial_unit_name, initial_unit_quanity):
-        self.initial_unit_name = initial_unit_name
-        self.initial_unit_quantity = initial_unit_quanity
-        self.conversion_values = {}
-
-    def __repr__(self):
-        return f"FluidVolume<Initial unit: {self.initial_unit_name}, initial value: {self.initial_unit_quantity} converted: {self.conversion_values}>"
-    
-class FluidVolumeConverter:
-    def __init__(self, conversion_table, initial_unit_name=None, initial_unit_quantity=None):
-        self.conversion_table = conversion_table
-        self.allowed_units = list(self.conversion_table.keys())
-
-        if initial_unit_name.lower() not in self.allowed_units:
-            raise ValueError(f"`initial_unit_name` parameter must be one of \
-                             {' '.join(self.allowed_units)}!")
-        
-        if type(initial_unit_quantity) not in [int, float] or initial_unit_quantity < 0:
-            raise ValueError("`initial_unit_quanity` must be a positve `int` or `float`")
-        
-        self.initial_unit_name = initial_unit_name.lower()
-        self.initial_unit_quantity = initial_unit_quantity
-
-        self.calculate_conversions()
-
-    def calculate_conversions(self):
-
-        self.fluid_volume = FluidVolume(self.initial_unit_name, self.initial_unit_quantity)
-
-        conversions = self.conversion_table[self.initial_unit_name]
-
-        for unit, conversion in conversions.items():
-            self.fluid_volume.conversion_values[unit] = conversion    
+            self.unit.conversion_values[unit] = conversion * self.initial_unit_quantity
