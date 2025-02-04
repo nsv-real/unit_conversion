@@ -1,5 +1,4 @@
-from collections import namedtuple
-from functools import wraps
+
 
 weight_conversion = {
     "kg": {
@@ -75,40 +74,73 @@ fluid_volume_conversion = {
     }
 }
 
-Weight = namedtuple("Weight", ["kgs", "pounds", "ounces"])
-FluidVolume = namedtuple("FluidVolume", ["floz", "cup", "pint", "quart", "gallon", "milliliter", "liter"])
+class Weight:
+    def __init__(self, initial_unit_name, initial_unit_quanity):
+        self.initial_unit_name = initial_unit_name
+        self.initial_unit_quantity = initial_unit_quanity
+        self.conversion_values = {}
 
-def check_conversion_value():
-    pass
+    def __repr__(self):
+        return f"Weight<Initial unit: {self.initial_unit_name}, initial value: {self.initial_unit_quantity} converted: {self.conversion_values}>"
 
-def convert_kg(value):
-    unit = "kg"
-    """Kilogram to American ounce and pound.
-       `value` is int or float.
-       Returns `Weight` named tuple.
-    """
-    return Weight(value, weight_conversion[unit]["pound"] * value, 
-                  weight_conversion[unit]["ounce"] * value)
+class WeightConverter:
+    def __init__(self, conversion_table, initial_unit_name=None, initial_unit_quantity=None):
+        self.conversion_table = conversion_table
+        self.allowed_units = list(self.conversion_table.keys())
 
-def convert_pounds(value):
-    unit = "pound"
-    """American pound to ounce and kilogram.
-       `value` is int or float.
-       Returns `Weight` named tuple.
-    """
-    return Weight(weight_conversion[unit]["kg"] * value, value,
-                  weight_conversion[unit]["ounce"] * value)
+        if initial_unit_name.lower() not in self.allowed_units:
+            raise ValueError(f"`initial_unit_name` parameter must be one of \
+                             {' '.join(self.allowed_units)}!")
+        
+        if type(initial_unit_quantity) not in [int, float] or initial_unit_quantity < 0:
+            raise ValueError("`initial_unit_quanity` must be a positve `int` or `float`")
+        
+        self.initial_unit_name = initial_unit_name.lower()
+        self.initial_unit_quantity = initial_unit_quantity
 
-def convert_ounces(value):
-    unit = "ounce"
-    """American ounce to pound and kilogram.
-       `value` is int or float.
-       Returns `Weight` named tuple.
-    """
-    return Weight(weight_conversion[unit]["kg"] * value, 
-                  weight_conversion[unit]["pound"] * value, value)
+        self.calculate_conversions()
 
+    def calculate_conversions(self):
 
-## FluidVolume = namedtuple("FluidVolume", ["floz", "cup", "pint", "quart", "gallon", "milliliter", "liter"])
+        self.weight = Weight(self.initial_unit_name, self.initial_unit_quantity)
+
+        conversions = self.conversion_table[self.initial_unit_name]
+
+        for unit, conversion in conversions.items():
+            self.weight.conversion_values[unit] = conversion
 
 
+class FluidVolume:
+    def __init__(self, initial_unit_name, initial_unit_quanity):
+        self.initial_unit_name = initial_unit_name
+        self.initial_unit_quantity = initial_unit_quanity
+        self.conversion_values = {}
+
+    def __repr__(self):
+        return f"FluidVolume<Initial unit: {self.initial_unit_name}, initial value: {self.initial_unit_quantity} converted: {self.conversion_values}>"
+    
+class FluidVolumeConverter:
+    def __init__(self, conversion_table, initial_unit_name=None, initial_unit_quantity=None):
+        self.conversion_table = conversion_table
+        self.allowed_units = list(self.conversion_table.keys())
+
+        if initial_unit_name.lower() not in self.allowed_units:
+            raise ValueError(f"`initial_unit_name` parameter must be one of \
+                             {' '.join(self.allowed_units)}!")
+        
+        if type(initial_unit_quantity) not in [int, float] or initial_unit_quantity < 0:
+            raise ValueError("`initial_unit_quanity` must be a positve `int` or `float`")
+        
+        self.initial_unit_name = initial_unit_name.lower()
+        self.initial_unit_quantity = initial_unit_quantity
+
+        self.calculate_conversions()
+
+    def calculate_conversions(self):
+
+        self.fluid_volume = FluidVolume(self.initial_unit_name, self.initial_unit_quantity)
+
+        conversions = self.conversion_table[self.initial_unit_name]
+
+        for unit, conversion in conversions.items():
+            self.fluid_volume.conversion_values[unit] = conversion    
