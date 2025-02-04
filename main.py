@@ -35,7 +35,8 @@ def main():
     for fluid in fluids:
         u = convert(initial_unit_name=fluid[0], initial_unit_quantity=fluid[1], category=fluid[2])
         print_unit(u)
-
+    print()
+    print()
     print("Converting weights...")
     for weight in weights:
         u = convert(initial_unit_name=weight[0], initial_unit_quantity=weight[1], category=weight[2])
