@@ -20,7 +20,7 @@ def print_unit(unit):
     print(f"Starting quanity is: {unit.initial_unit_quantity}")
 
     for units in unit.converted_units:
-        print(f"Unit: {units}, Value:{getattr(unit, units)}")
+        print(f"Unit: {units}, Value: {getattr(unit, units)}")
     
     print("[+] Ending conversion...")
 
